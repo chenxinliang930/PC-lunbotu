@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./jquery.js"></script>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+    li {
+        list-style-type: none;
+    }
+    .bannerUl {
+        /* position: absolute; */
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
+    .bannerUl li {
+        float: left;
+        height: 100%;
+    }
+    .blockClick {
+        height: 6px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: 330px auto;
+    }
+    .blockClick li {
+        width: 35px;
+        height: 6px;
+        float: left;
+        background: #F37327;
+        margin-left: 7px;
+        cursor: pointer;
+    }
+    .blockClick li:first-child {
+        margin: 0;
+    }
+    .blockClick .active {
+        background: white;
+    }
+    .indexBanner>p {
+        display: none;
+        height: 60px;
+        width: 25px;
+        position: absolute;
+        top: 152px;
+        cursor: pointer;
+        font-size: 48px;
+        color: white;
+    }
+    .indexBanner>p.left{
+        left: 24px;
+    }
+    .indexBanner>p.right{
+        right: 24px;
+    }
+    .entryBlock {
+        width: 1180px;
+        margin: 30px auto;
+    }
+    .bannerUl:after, .entryBlock:after {
+        display: block;
+        content: '.';
+        clear: both;
+        line-height: 0;
+        visibility: hidden;
+    }
+
+    .entryBlock .entry {
+        font-family: PingFangSC-Regular;
+        font-size: 18px;
+        float: left;
+        width: 576px;
+        height: 220px;
+        border: 1px solid #E2E2E2;
+        box-shadow: 0px 2px 5px #C5C5C5;
+        /* margin: 10px; */
+    }
+    .entryBlock .entry .info,  .entryBlock .entry .summary{
+        font-size: 13px;
+        margin-top: 10px;
+    }
+    .entryBlock .entry .summary {
+        color: #4A4A4A;
+    }
+    .entryBlock .entry .title {
+        margin-top: 25px;
+    }
+    .entryBlock .traineeEntry {
+        float: right;
+    }
+    .entryBlock .applyJob {
+        width: 173px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        margin: 35px auto;
+        color: white;
+        background: #F37327;
+        border-radius: 40px;
+        cursor: pointer;
+    }
+</style>
+<body style="position:relative;">
+    <div style="width: 100%;position: relative;overflow:hidden;" class="indexBanner">
+        <ul class="bannerUl">
+            <!-- <li style="background:yellow"></li>
+            <li style="background:blue"></li>
+            <li style="background:red"></li>
+            <li style="background:green"></li>
+            <li style="background:yellow"></li> -->
+        </ul>
+        <ul class="blockClick">
+            <!-- <li class="active" data-index="1"></li>
+            <li data-index="2"></li>
+            <li data-index="3"></li>
+            <li data-index="4"></li> -->
+        </ul>
+        <p class="left"><</p>
+        <p class="right">></p>
+    </div>
+    <div class="entryBlock">
+        <div class="entry graduateEntry">
+            <p class="applyJob">申请工作机会</p>
+        </div>
+        <div class="entry traineeEntry">
+            <p class="applyJob">申请工作机会</p>
+        </div>
+    </div>
+</body>
+<script>
+    var images = [
+        // "https://img.alicdn.com/tfs/TB1ZznpbeuSBuNjy1XcXXcYjFXa-1920-718.jpg",
+        "https://img.alicdn.com/tfs/TB1ASyAXL9TBuNjy1zbXXXpepXa-1920-364.jpg",
+        "https://img.alicdn.com/tfs/TB1i9J8X9CWBuNjy0FhXXb6EVXa-1920-364.jpg",
+        "https://img.alicdn.com/tfs/TB1i9J8X9CWBuNjy0FhXXb6EVXa-1920-364.jpg"
+    ];
+    
+    var browserWidth = document.body.clientWidth;
+    var imageNum = images.length;
+    var curIndex = 1;
+    var timer;
+    var isTimer = true;
+    $('.bannerUl li').width(browserWidth);              //获取浏览器的宽度
+    $('.bannerUl').width(browserWidth * (imageNum + 2));            //获取所有图片的应占的总宽度
+    $('.blockClick').width(35 * imageNum + 7 * (imageNum - 1));        //设置点击块的总宽度
+    $('.bannerUl').css('margin-left', -browserWidth + 'px');
+    
+    $.each(images, function(index, item) {
+        $('.bannerUl').append("<li><img src="+item+" width="+browserWidth+" /></li>");
+        var active = index == 0 ? 'active' : '';
+        $('.blockClick').append("<li data-index="+ ++index +" class="+active+"></li>")
+    })
+    $('.bannerUl').append("<li><img src="+images[0]+" width="+browserWidth+" /></li>");
+    $('.bannerUl').prepend("<li><img src="+images[images.length - 1]+" width="+browserWidth+" /></li>");
+    setTimeout(function() {
+        $('.indexBanner>p').css('display', 'block');
+        $('.indexBanner>p').css('top',$('.bannerUl').height()/2 - 30 + 'px');
+        $('.blockClick').css('margin-top', $('.bannerUl').height() - 31 + 'px');
+    }, 500);
+
+    $(window).resize(function(e) {
+        browserWidth = document.body.clientWidth;
+        $('.bannerUl li').width(browserWidth);              //获取浏览器的宽度
+        $('.bannerUl').width(browserWidth * (imageNum + 2));            //获取所有图片的应占的总宽度
+
+        $('.bannerUl li img').width(browserWidth);
+        $('.indexBanner>p').css('top',$('.bannerUl').height()/2 - 30 + 'px');
+        $('.blockClick').css('margin-top', $('.bannerUl').height() - 31 + 'px');
+
+        clearInterval(timer);
+        $('.bannerUl').stop(false,false)
+        $('.bannerUl').css('margin-left',-(curIndex) * browserWidth + 'px');
+    })
+
+    //轮播动
+    function actionBanner(activeWidth) {
+        $('.bannerUl').animate({
+            "margin-left": activeWidth
+        }, 400, function() {
+            var left = parseInt($('.bannerUl').css('margin-left').split('px')[0]);
+            if( -left == browserWidth * (imageNum + 1)) {
+                $('.bannerUl').css('margin-left', -browserWidth + 'px');
+                left = -browserWidth;
+            }
+
+            if( left == 0) {
+                $('.bannerUl').css('margin-left', -browserWidth * imageNum + 'px');
+                left = -browserWidth * imageNum;
+            }
+            curIndex = (-left / browserWidth);
+            $.each($('.blockClick li'), function(index, item) {
+                $(item).removeClass('active')
+                if ($(item).data('index') == curIndex) {
+                    $(item).addClass('active');
+                }
+            })
+            if (isTimer) {
+                startIntrtval();
+            }
+        })
+    }
+
+    //计算banner动画距离
+    function getMoveWidth() {
+        var moveWidth = -(curIndex) * browserWidth;
+        actionBanner(moveWidth);
+    }
+
+    //启动定时器
+    function startIntrtval() {
+        timer = setTimeout(function() {
+            clearInterval(timer);
+            var moveWidth = -(curIndex + 1) * browserWidth;
+            actionBanner(moveWidth);
+        },3000)
+    }
+
+    startIntrtval();
+
+    $('.blockClick li').on('click', function(e) {
+        clearInterval(timer);
+        $('.bannerUl').stop(false,false)
+        $.each($('.blockClick li'), function(index, item) {
+            $(item).removeClass('active')
+        })
+        $(this).addClass('active');
+        curIndex = parseInt($(this).data('index'));
+        getMoveWidth();
+    })
+
+    $('.indexBanner>p').on('click', function(e) {
+        clearInterval(timer);
+        $('.bannerUl').stop(false,true)
+        if ($(e.target).hasClass('left')) {
+            curIndex = --curIndex;
+            getMoveWidth();
+        } else {
+            curIndex += 1;
+            getMoveWidth();
+        }
+    })
+
+    $('.indexBanner').on('mouseover', function() {   //鼠标滑到轮播区域停止轮播
+        clearInterval(timer);
+        isTimer = false;
+    })
+    $('.indexBanner').on('mouseout', function(e) {
+        if (!isTimer) {
+            isTimer = true;
+            startIntrtval();
+        }
+    })
+</script>
+</html>
